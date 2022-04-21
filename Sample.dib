@@ -1,0 +1,154 @@
+#!markdown
+
+枚举类型示例
+
+#!csharp
+
+[Flags]
+public enum MyEnumType
+{
+    A = 2 << 0,
+    B = 2 << 1,
+    C = 2 << 2,
+    D = 2 << 3,
+    E = 2 << 4,
+    F = 2 << 5,
+    G = 2 << 6,
+    H = 2 << 7
+}
+
+#!markdown
+
+枚举的与操作
+
+#!csharp
+
+var fitness = MyEnumType.E | MyEnumType.F | MyEnumType.G;
+Console.WriteLine(fitness.HasFlag(MyEnumType.A));
+Console.WriteLine(fitness.HasFlag(MyEnumType.B));
+Console.WriteLine(fitness.HasFlag(MyEnumType.C));
+Console.WriteLine(fitness.HasFlag(MyEnumType.D));
+Console.WriteLine(fitness.HasFlag(MyEnumType.E));
+Console.WriteLine(fitness.HasFlag(MyEnumType.F));
+Console.WriteLine(fitness.HasFlag(MyEnumType.G));
+Console.WriteLine(fitness.HasFlag(MyEnumType.H));
+Console.WriteLine(fitness);
+
+#!markdown
+
+## 枚举遍历
+
+#!csharp
+
+foreach(MyEnumType t in Enum.GetValues(typeof(MyEnumType))){
+    Console.WriteLine(t.ToString());
+}
+
+#!csharp
+
+#r "nuget:McMaster.Extensions.CommandLineUtils,4.0.1"
+
+using System.Diagnostics;
+using McMaster.Extensions.CommandLineUtils;
+
+CommandLineApplication.Execute<MainCommand>();
+
+public class MainCommand
+{
+    void OnExecute()
+    {
+        Console.WriteLine($"Hello word");
+    }
+}
+
+#!markdown
+
+## stopwatch Thread.Sleep() 和 Task.Delay()
+
+#!csharp
+
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+var sw =new Stopwatch();
+sw.Start();
+Thread.Sleep(1000);
+sw.Stop();
+Console.WriteLine(sw.ElapsedMilliseconds);
+
+sw.Restart();
+await Task.Delay(1000);
+sw.Stop();
+Console.WriteLine(sw.ElapsedMilliseconds);
+
+#!markdown
+
+## Span
+
+#!csharp
+
+Console.WriteLine(ObfuscatePhoneSpan("我是莫明春"));
+static string ObfuscatePhoneSpan(string id)
+{
+    return string.Create(id.Length, id, (sc, value) =>
+    {
+        int n = id.Length / 2;
+        int r = id.Length - (id.Length * 20 / 100) - n; //需替换的个数 = (总长) - (20%) - (一半)
+
+        value.AsSpan().CopyTo(sc);
+        sc.Slice(n, r).Fill('*');
+    });
+}
+
+#!markdown
+
+## Singleton
+
+#!csharp
+
+#r "./publish/DiyHomeModels.dll"
+// 侵入式
+class myClass:Singleton<myClass>
+{
+    public void Run(){
+        Console.WriteLine("Hello World");
+    }
+}
+myClass.Instance.Run();
+
+//非侵入式
+class myClass2
+{
+    public void Run(){
+        Console.WriteLine("Hello World 2");
+    }
+}
+Singleton<myClass2>.Instance.Run();
+
+#!markdown
+
+Lst
+
+#!csharp
+
+var lst=new List<float>{345,256,18,25};
+Console.WriteLine(string.Join(',',lst.ToArray()));
+
+Console.WriteLine(string.Concat(lst));
+Console.WriteLine(string.Join<float>(",",lst));
+
+#!csharp
+
+#r "./publish/DiyHomeHelper.dll"
+#r "./publish/DiyHomeModels.dll"
+using lizzie;
+using DiyHomeHelpers.O_Product;
+using DiyHomeModels.E_ColorModel;
+
+ObjectFinishConfig config =new ObjectFinishConfig();
+
+#!csharp
+
+var A=default(float?);
+Console.WriteLine(A==0);
+Console.WriteLine(A==null);
