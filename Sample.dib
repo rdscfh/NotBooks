@@ -17,6 +17,33 @@ public enum MyEnumType
     H = 2 << 7
 }
 
+#!csharp
+
+using lizzie;
+using DiyHomeFinish;
+using DiyHomeHelpers.O_Product;
+using DiyHomeModels.E_ColorModel;
+
+var config = new ObjectFinishConfig();
+var finish = new FinishImageModel() { FinishCode = "716SH" };
+var lambda = new PredicateFinish();
+lambda.InitFinish(finish);
+lambda.InitConfig(config);
+
+
+var function = LambdaCompiler.Compile(lambda, @"
+ var(@finish,IsMatchFinishCode('716','919'))
+ var(@utype,notTargitMatch(1))
+ if(@all(finish,utype),
+ {
+   1
+ },
+ {
+   3
+ })", true);
+
+function();
+
 #!markdown
 
 枚举的与操作
